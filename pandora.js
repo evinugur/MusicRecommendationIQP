@@ -1,4 +1,9 @@
-var clickableClassNames = ['thumbDownButton', 'thumbUpButton', 'playButton', 'pauseButton', 'skipButton'];
+var clickableClassNames = [
+	{className: 'thumbDownButton', eventName: "Thumbs Down"},
+	{className: 'thumbUpButton', eventName: "Thumbs Up"},
+	{className: 'playButton', eventName: "Play"},
+	{className: 'pauseButton', eventName: "Pause"},
+	{className: 'skipButton', eventName: "Skip"}]
 
 // chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
 // multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
@@ -25,11 +30,20 @@ function bindEventsAfterSplashScreen() {
 
 function injectListeners() {
 	clickableClassNames.forEach(function(currentValue, index, array) {
-			var element = document.getElementsByClassName(currentValue)[0].children[0];
-			element.onclick = function() {console.log(currentValue + " was clicked");};
+			var element = document.getElementsByClassName(currentValue.className)[0].children[0];
+			element.onclick = function() {
+				// TODO make logging event request here - we can look at currentValue to look at what was played
+				console.log("TRACK EVENT:\t" + currentValue.eventName);
+			};
 	});
 }
 
 bindEventsAfterSplashScreen();
 
+function getCurrentStation() {
 
+}
+
+function getCurrentUsername() {
+
+}
