@@ -18,13 +18,11 @@ function bindEventsAfterSplashScreen() {
 	if (document.getElementById("splash").style.display !== 'none') {
 		// the splash screen is still visible; try again
 		console.log(++loadingTime + ".) Loading Splash Screen");
-		window.setTimeout(bindEventsAfterSplashScreen, TIMEOUT_INTERVAL);
+		setTimeout(bindEventsAfterSplashScreen, TIMEOUT_INTERVAL);
 	}
 	else {
 		// additional timeout delay just to wait and make sure
-		setTimeout(function() {
-			injectListeners();			
-		}, TIMEOUT_INTERVAL);
+		setTimeout(injectListeners, TIMEOUT_INTERVAL);
 	}
 }
 
