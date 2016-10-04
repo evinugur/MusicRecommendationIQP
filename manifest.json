@@ -1,0 +1,16 @@
+{
+	"name": "IQP Demo",
+	"description": "Intercept Pandora touch events",
+	"version": "1.0",
+	"author": "Evin Ugurs",
+	"permissions": ["http://*.pandora.com/*", "https://*.pandora.com//*"],
+	"web_accessible_resources": ["pandora.js"],
+	"content_scripts": [
+		{
+			"matches": ["http://*.pandora.com/*", "https://*.pandora.com/*"],
+			"js": ["app.js"],
+			"run_at": "document_idle"
+		}
+	],
+	"manifest_version": 2
+}
