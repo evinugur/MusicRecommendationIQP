@@ -3,14 +3,15 @@ var clickableClassNames = [
 	{className: 'thumbUpButton', eventName: "Thumbs Up"},
 	{className: 'playButton', eventName: "Play"},
 	{className: 'pauseButton', eventName: "Pause"},
-	{className: 'skipButton', eventName: "Skip"}]
+	{className: 'skipButton', eventName: "Skip"}];
 
-// chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
-// multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
-// polling 
+/* chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
+multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
+polling */
 
 var TIMEOUT_INTERVAL = 500;
 
+// just used for diagnostic printing; shows how the current async timeout request we are on
 var loadingTime = 0;
 
 function bindEventsAfterSplashScreen() {
@@ -33,6 +34,8 @@ function injectListeners() {
 			var element = document.getElementsByClassName(currentValue.className)[0].children[0];
 			element.onclick = function() {
 				// TODO make logging event request here - we can look at currentValue to look at what was played
+				console.log("Current User:\t" + getCurrentUsername());
+				console.log("Current Station:\t" + getCurrentStationName());
 				console.log("TRACK EVENT:\t" + currentValue.eventName);
 			};
 	});
@@ -40,10 +43,11 @@ function injectListeners() {
 
 bindEventsAfterSplashScreen();
 
-function getCurrentStation() {
-
+function getCurrentStationName() {
+	var container = document.getElementsByClassName('stationListItem selected')[0];
+	return container.getElementsByClassName('stationNameText')[0].innerHTML.trim();
 }
 
 function getCurrentUsername() {
-
+	return document.getElementsByClassName('userName')[0].innerHTML;
 }
