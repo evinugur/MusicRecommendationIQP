@@ -39,7 +39,8 @@ function injectListeners() {
 			element.addEventListener("click", function() {
 				// TODO make logging event request here - we can look at currentValue to look at what was played
 				console.log("Current User:\t" + getCurrentUsername());
-				console.log("Current Station:\t" + getCurrentStationId());
+				console.log("Current Station ID:\t" + getCurrentStationId());
+				console.log("Current Station Name:\t" + getCurrentStationName());
 				console.log("TRACK EVENT:\t" + currentValue.eventName);
 			});
 	});
@@ -47,8 +48,17 @@ function injectListeners() {
 
 bindEventsAfterSplashScreen();
 
-// TODO actually find UUID
 function getCurrentStationId() {
+	// ie https://www.pandora.com/station/3333039448775710377/fans
+	var url = document.getElementsByClassName('findFans')[0].href;
+	var token = '/station/';
+	url = url.substring(url.indexOf(token));
+	url = url.substring(token.length);
+	url = url.substring(0, url.indexOf('/'));
+	return Number(url);
+}
+
+function getCurrentStationName() {
 	var container = document.getElementsByClassName('stationListItem selected')[0];
 	return container.getElementsByClassName('stationNameText')[0].innerHTML.trim();
 }
