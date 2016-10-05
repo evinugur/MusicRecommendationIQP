@@ -1,4 +1,4 @@
-// these refer to events that can be tracked
+// these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
 	{className: 'thumbDownButton', eventName: "Thumbs Down"},
 	{className: 'thumbUpButton', eventName: "Thumbs Up"},
@@ -22,10 +22,16 @@ function bindEventsAfterSplashScreen() {
 	}
 	else {
 		// additional timeout delay just to wait and make sure
-		setTimeout(injectListeners, TIMEOUT_INTERVAL);
+		setTimeout(init, TIMEOUT_INTERVAL);
 	}
 }
 
+
+function init() {
+	// prevents participants from muddling with data 
+	document.getElementById('shuffleContainer').remove();
+	injectListeners();
+}
 
 function injectListeners() {
 	clickableClassNames.forEach(function(currentValue, index, array) {
@@ -33,7 +39,7 @@ function injectListeners() {
 			element.addEventListener("click", function() {
 				// TODO make logging event request here - we can look at currentValue to look at what was played
 				console.log("Current User:\t" + getCurrentUsername());
-				console.log("Current Station:\t" + getCurrentStationName());
+				console.log("Current Station:\t" + getCurrentStationId());
 				console.log("TRACK EVENT:\t" + currentValue.eventName);
 			});
 	});
@@ -41,7 +47,8 @@ function injectListeners() {
 
 bindEventsAfterSplashScreen();
 
-function getCurrentStationName() {
+// TODO actually find UUID
+function getCurrentStationId() {
 	var container = document.getElementsByClassName('stationListItem selected')[0];
 	return container.getElementsByClassName('stationNameText')[0].innerHTML.trim();
 }
