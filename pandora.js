@@ -8,7 +8,7 @@ var KEY_SONG = "song";
 // hardcoded values for KEY_EVENT
 var EVENT_THUMBS_DOWN_ADDED = "Tumb Down Added";
 var EVENT_THUMBS_UP_ADDED = "Thumb Up Added";
-var EVENT_THUMBS_DOWN_DELETED = "Tumb Down Deleted";
+var EVENT_THUMBS_DOWN_DELETED = "Thumb Down Deleted";
 var EVENT_THUMBS_UP_DELETED = "Thumb Up Deleted";
 var EVENT_PLAY = "Play";
 var EVENT_PAUSE = "Pause";
@@ -69,6 +69,7 @@ function injectStationDetailListeners() {
 	// we need station id from URL since you can view a station's details while playing another station
 	var stationId = Number(url[url.length -1]);
 	var stationName = $('.hed-1')[0].innerHTML.trim();
+
 	$('.thumb_up_list').find('.deletable').each(function() {
 		var el = this;
 		el.addEventListener("click", function() {
@@ -82,10 +83,17 @@ function injectStationDetailListeners() {
 		});
 	});
 
-
-
-	$('.thumb_down_list').find('.deletable').addEventListener("click", function() {
-
+	$('.thumb_down_list').find('.deletable').each(function(){
+		var el = this;
+		el.addEventListener("click", function() {
+			var sognContainer = $(el.parentElement.parentElement).find(".col1 a")[0];
+			track({
+				KEY_EVENT: EVENT_THUMBS_DOWN_DELETED,
+				KEY_STATION_ID: stationId,
+				KEY_STATION_NAME: stationName,
+				KEY_SONG: {name: sognContainer.innerHTML, href: sognContainer.href}
+			});
+		});
 	});
 }
 
