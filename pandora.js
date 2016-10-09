@@ -61,6 +61,7 @@ function track(data) {
 	data = data || {};
 	console.log("Username:\t" + getCurrentUsername());
 	console.log("Station ID:\t" + getCurrentStationId());
+	console.log("Song Info:\t" + JSON.stringify(getSongInfo()));
 	console.log("Station Name:\t" + (data.KEY_STATION_NAME || getCurrentStationName()));
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
 }
@@ -82,6 +83,16 @@ function getCurrentStationName() {
 
 function getCurrentUsername() {
 	return document.getElementsByClassName('userName')[0].innerHTML;
+}
+
+function getSongInfo() {
+	var song = $('.songTitle')[0];
+	return {
+		// song name user sees
+		name: song.innerHTML,
+		// link to page for song (unique identifier for a track)
+		href: song.href
+	};
 }
 
 /* points of concern 
