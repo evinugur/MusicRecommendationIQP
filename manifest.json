@@ -3,6 +3,7 @@
 	"description": "Intercept Pandora touch events",
 	"version": "1.0",
 	"author": "Evin Ugur",
+	// would add server here
 	"permissions": ["http://*.pandora.com/*", "https://*.pandora.com//*"],
 	"web_accessible_resources": ["pandora.js"],
 	"content_scripts": [

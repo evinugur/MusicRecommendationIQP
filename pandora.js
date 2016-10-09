@@ -4,10 +4,9 @@ var KEY_STATION_ID = "station_id";
 var KEY_STATION_NAME = "station_name";
 var KEY_SONG = "song";
 
-
 // hardcoded values for KEY_EVENT
 var EVENT_THUMBS_DOWN_ADDED = "Tumb Down Added";
-var EVENT_THUMBS_UP_ADDED = "Thumb Up Added";
+var EVENT_THUMBS_UP_ADDED 	= "Thumb Up Added";
 var EVENT_THUMBS_DOWN_DELETED = "Thumb Down Deleted";
 var EVENT_THUMBS_UP_DELETED = "Thumb Up Deleted";
 var EVENT_PLAY = "Play";
@@ -29,8 +28,6 @@ polling */
 
 var TIMEOUT_INTERVAL = 500;
 
-
-
 // just used for diagnostic printing; shows how the current async timeout request we are on
 var loadingDelayCount = 0;
 function bindEventsAfterSplashScreen() {
@@ -44,7 +41,6 @@ function bindEventsAfterSplashScreen() {
 		setTimeout(init, TIMEOUT_INTERVAL);
 	}
 }
-
 
 function init() {
 	// prevents participants from muddling with data 
@@ -104,6 +100,7 @@ function track(data) {
 	console.log("Song Info:\t" + JSON.stringify((data.KEY_SONG || getSongInfo())));
 	console.log("Station Name:\t" + (data.KEY_STATION_NAME || getCurrentStationName()));
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
+	console.log("Date:\t", new Date().toUTCString());
 }
 
 function getCurrentStationId() {
@@ -145,6 +142,5 @@ Also need to code a way for a user to track when a user adds a seed to a station
 
 Should track song when click occurs
 */
-
 
 bindEventsAfterSplashScreen();
