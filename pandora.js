@@ -55,12 +55,14 @@ function injectListeners() {
 				track({KEY_EVENT: currentValue.eventName});
 			});
 	});
-	if (document.location.href.indexOf("pandora.com/station/") !== -1) {
-		injectStationDetailListeners();
-	}
+	var url = document.location.href;
+	if (url.indexOf("pandora.com/station/") !== -1) 
+		if(url.indexOf("/play/") === -1)
+			injectStationDetailListeners();
 }
 
 function injectStationDetailListeners() {
+	console.log("injecting station detail page listeners");
 	var url = document.location.href.split('/');
 	// we need station id from URL since you can view a station's details while playing another station
 	var stationId = Number(url[url.length -1]);
