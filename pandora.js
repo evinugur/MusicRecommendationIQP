@@ -3,6 +3,7 @@ var KEY_EVENT = "event";
 var KEY_STATION_ID = "station_id";
 var KEY_STATION_NAME = "station_name";
 var KEY_SONG = "song";
+var KEY_SHUFFLE_ON = "shuffle";
 
 // hardcoded values for KEY_EVENT
 var EVENT_THUMBS_DOWN_ADDED = "Tumb Down Added";
@@ -101,10 +102,12 @@ function track(data) {
 	console.log("Station ID:\t" + (data.KEY_STATION_ID || getCurrentStationId()));
 	console.log("Song Info:\t" + JSON.stringify((data.KEY_SONG || getSongInfo())));
 	console.log("Station Name:\t" + (data.KEY_STATION_NAME || getCurrentStationName()));
+	console.log("Shuffle Enabled:\t" + isShuffledEnabled());
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
 	console.log("Date:\t" + new Date().toUTCString());
 }
 
+// TODO possible broken on shuffle
 function getCurrentStationId() {
 	// ie https://www.pandora.com/station/3333039448775710377/fans
 	var url = document.getElementsByClassName('findFans')[0].href;
@@ -115,6 +118,7 @@ function getCurrentStationId() {
 	return Number(url);
 }
 
+// TODO broken on shuffle
 function getCurrentStationName() {
 	var container = document.getElementsByClassName('stationListItem selected')[0];
 	return container.getElementsByClassName('stationNameText')[0].innerHTML.trim();
@@ -133,6 +137,10 @@ function getSongInfo() {
 		// link to page for song (unique identifier for a track)
 		href: song.href
 	};
+}
+
+function isShuffledEnabled() {
+	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
 }
 
 /* points of concern 
