@@ -44,7 +44,7 @@ function bindEventsAfterSplashScreen() {
 
 function init() {
 	// prevents participants from muddling with data 
-	document.getElementById('shuffleContainer').remove();
+	// document.getElementById('shuffleContainer').remove();
 	injectListeners();
 }
 
@@ -100,7 +100,7 @@ function track(data) {
 	console.log("Song Info:\t" + JSON.stringify((data.KEY_SONG || getSongInfo())));
 	console.log("Station Name:\t" + (data.KEY_STATION_NAME || getCurrentStationName()));
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
-	console.log("Date:\t", new Date().toUTCString());
+	console.log("Date:\t" + new Date().toUTCString());
 }
 
 function getCurrentStationId() {
