@@ -105,6 +105,26 @@ function track(data) {
 	console.log("Shuffle Enabled:\t" + isShuffledEnabled());
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
 	console.log("Date:\t" + new Date().toUTCString());
+	var song = (data.KEY_SONG || getSongInfo());
+	var payload = {
+		username: getCurrentUsername(),
+		event: data.KEY_EVENT,
+		date: new Date().toISOString(),
+		stationId: (data.KEY_STATION_ID || getCurrentStationId()),
+		stationName: (data.KEY_STATION_NAME || getCurrentStationName()),
+		songName: song.name,
+		songHref: song.href,
+		shuffleEnabled: isShuffledEnabled()
+	};
+	$.ajax({
+		url: 'https://warm-lake-98113.herokuapp.com/pandora-event',
+		type: 'POST',
+		data: JSON.stringify(payload),
+		contentType : 'application/json',
+		success: function() {
+			console.log("Posted");
+		}
+	});
 }
 
 // TODO possible broken on shuffle
