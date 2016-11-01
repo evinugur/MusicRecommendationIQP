@@ -11,7 +11,7 @@
           "128": "128.png"},
 	"content_scripts": [
 		{
-			"matches": ["http://*.pandora.com/*", "https://*.pandora.com/*"],
+			"matches": ["http://*.pandora.com/*", "https://*.pandora.com/*", "http://*.tunein.com/*", "https://*.tunein.com/*"],
 			"js": ["app.js"],
 			"run_at": "document_idle"
 		}
