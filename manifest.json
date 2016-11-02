@@ -5,7 +5,7 @@
 	"author": "Evin Ugur",
 	// would add server here
 	"permissions": ["http://*/"],
-	"web_accessible_resources": ["pandora.js"],
+	"web_accessible_resources": ["pandora.js", "tunein.js", "jquery.ba-hashchange.min.js"],
 	"icons": { "16": "16.png",
            "48": "48.png",
           "128": "128.png"},
