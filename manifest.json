@@ -1,11 +1,10 @@
 {
-	"name": "IQP Demo",
+	"name": "IQP Tracker",
 	"description": "Intercept Pandora touch events",
 	"version": "1.0",
 	"author": "Evin Ugur",
-	// would add server here
 	"permissions": ["http://*/"],
-	"web_accessible_resources": ["pandora.js", "tunein.js", "jquery.ba-hashchange.min.js"],
+	"web_accessible_resources": ["pandora.js", "tunein.js"],
 	"icons": { "16": "16.png",
            "48": "48.png",
           "128": "128.png"},

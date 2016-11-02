@@ -1,6 +1,5 @@
 (function() {
 	var url = document.location.href;
-	var src;
 	if (url.indexOf("pandora") !== -1) {
 		injectScript("pandora.js");
 	}

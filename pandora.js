@@ -13,6 +13,7 @@ var EVENT_THUMBS_UP_DELETED = "Thumb Up Deleted";
 var EVENT_PLAY = "Play";
 var EVENT_PAUSE = "Pause";
 var EVENT_SKIP = "Skip";
+var EVENT_STATION_SELECT = "Station Select";
 
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
@@ -44,8 +45,6 @@ function bindEventsAfterSplashScreen() {
 }
 
 function init() {
-	// prevents participants from muddling with data 
-	// document.getElementById('shuffleContainer').remove();
 	injectListeners();
 }
 
@@ -56,10 +55,18 @@ function injectListeners() {
 				track({KEY_EVENT: currentValue.eventName});
 			});
 	});
+	// station change event 
+	$("#stationList").on("click", ".stationListItem", function() {
+		if (this.children[0].id === "shuffleContainer") return; // shuffling is tracked separately
+		var newStation = $(this).find('.stationNameText')[0].innerHTML.trim();
+		console.log(newStation);
+		console.log("OLD: " + window.location.href);
+	});
 	var url = document.location.href;
 	if (url.indexOf("pandora.com/station/") !== -1) 
 		if(url.indexOf("/play/") === -1)
 			injectStationDetailListeners();
+
 }
 
 function injectStationDetailListeners() {
@@ -68,7 +75,6 @@ function injectStationDetailListeners() {
 	// we need station id from URL since you can view a station's details while playing another station
 	var stationId = Number(url[url.length -1]);
 	var stationName = $('.hed-1')[0].innerHTML.trim();
-
 	$('.thumb_up_list').find('.deletable').each(function() {
 		var el = this;
 		el.addEventListener("click", function() {
@@ -121,9 +127,7 @@ function track(data) {
 		type: 'POST',
 		data: JSON.stringify(payload),
 		contentType : 'application/json',
-		success: function() {
-			console.log("Posted");
-		}
+		success: function() { console.log("Posted"); }
 	});
 }
 
