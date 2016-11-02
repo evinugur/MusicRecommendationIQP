@@ -15,7 +15,7 @@ var EVENT_PAUSE = "Pause";
 var EVENT_SKIP = "Skip";
 var EVENT_STATION_SELECT = "Station Select";
 
-var VALUE_NO_SONG = {"songName" :"", href: ""};
+var VALUE_NO_SONG = {name :"", href: ""};
 
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
@@ -80,10 +80,7 @@ function injectListeners() {
 	$("#stationList").on("click", ".stationListItem", function() {
 		if (this.children[0].id === "shuffleContainer") return; // shuffling is tracked separately
 		var newStation = $(this).find('.stationNameText')[0].innerHTML.trim();
-		console.log(newStation);
-		console.log("OLD: " + window.location.href);
 		window.URL_CHANGE_CALLBACK = function() {
-			console.log("NEW:", window.location.href);
 			track({
 				KEY_EVENT: EVENT_STATION_SELECT,
 				KEY_STATION_ID: getStationIdFromUrl(window.location.href, "/station/play/"),
