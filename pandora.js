@@ -14,6 +14,7 @@ var EVENT_PLAY = "Play";
 var EVENT_PAUSE = "Pause";
 var EVENT_SKIP = "Skip";
 var EVENT_STATION_SELECT = "Station Select";
+var EVENT_INITIAL_STATION = "Initial Station";
 
 var VALUE_NO_SONG = {name :"", href: ""};
 
@@ -67,6 +68,7 @@ function init() {
 	}
 	urlPolling();
 	injectListeners();
+	recordInitialStationEvent();
 }
 
 function injectListeners() {
@@ -93,7 +95,15 @@ function injectListeners() {
 	if (url.indexOf("pandora.com/station/") !== -1) 
 		if(url.indexOf("/play/") === -1)
 			injectStationDetailListeners();
+}
 
+function recordInitialStationEvent() {
+	window.setTimeout(function() {
+		track({
+				KEY_EVENT: EVENT_INITIAL_STATION,
+				KEY_STATION_ID: getStationIdFromUrl(window.location.href, "/station/play/")
+			});	
+	}, 3000);
 }
 
 function injectStationDetailListeners() {
@@ -191,8 +201,6 @@ function getSongInfo() {
 		href: song.href
 	};
 }
-
-
 
 function isShuffledEnabled() {
 	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
