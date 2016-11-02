@@ -15,6 +15,8 @@ var EVENT_PAUSE = "Pause";
 var EVENT_SKIP = "Skip";
 var EVENT_STATION_SELECT = "Station Select";
 
+var VALUE_NO_SONG = {"songName" :"", href: ""};
+
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
 	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
@@ -27,8 +29,16 @@ var clickableClassNames = [
 /* chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
 multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
 polling */
-
 var TIMEOUT_INTERVAL = 500;
+
+/**
+Variables used to detect a change in URL events (listening to HTML5's hashchange as well as a jquery plugin weren't working) so 
+instead of figuring out what's going on we will poll and use global variables. 
+At URL_POLLING_INVTERVAL if URL_CACHE is incorrect URL_CHANGE_CALLBACK will be called if it isn't null and then will become null.
+*/
+var URL_POLLING_INTERVAL = 100;
+var URL_CACHE = document.location.href;
+var URL_CHANGE_CALLBACK = null;
 
 // just used for diagnostic printing; shows how the current async timeout request we are on
 var loadingDelayCount = 0;
@@ -45,6 +55,17 @@ function bindEventsAfterSplashScreen() {
 }
 
 function init() {
+	var urlPolling = function() {
+		if (URL_CACHE !== document.location.href) {
+			URL_CACHE = document.location.href;
+			if (URL_CHANGE_CALLBACK) {
+				URL_CHANGE_CALLBACK();
+				URL_CHANGE_CALLBACK = null;
+			}
+		}
+		setTimeout(urlPolling, URL_POLLING_INTERVAL);
+	}
+	urlPolling();
 	injectListeners();
 }
 
@@ -61,6 +82,15 @@ function injectListeners() {
 		var newStation = $(this).find('.stationNameText')[0].innerHTML.trim();
 		console.log(newStation);
 		console.log("OLD: " + window.location.href);
+		window.URL_CHANGE_CALLBACK = function() {
+			console.log("NEW:", window.location.href);
+			track({
+				KEY_EVENT: EVENT_STATION_SELECT,
+				KEY_STATION_ID: getStationIdFromUrl(window.location.href, "/station/play/"),
+				KEY_STATION_NAME: newStation,
+				KEY_SONG: VALUE_NO_SONG
+			});	
+		};
 	});
 	var url = document.location.href;
 	if (url.indexOf("pandora.com/station/") !== -1) 
@@ -134,12 +164,14 @@ function track(data) {
 // TODO possible broken on shuffle
 function getCurrentStationId() {
 	// ie https://www.pandora.com/station/3333039448775710377/fans
-	var url = document.getElementsByClassName('findFans')[0].href;
-	var token = '/station/';
+	return getStationIdFromUrl(document.getElementsByClassName('findFans')[0].href, '/station/')
+}
+
+function getStationIdFromUrl(url, token) {
 	url = url.substring(url.indexOf(token));
 	url = url.substring(token.length);
 	url = url.substring(0, url.indexOf('/'));
-	return Number(url);
+	return url;
 }
 
 // TODO broken on shuffle
@@ -162,6 +194,8 @@ function getSongInfo() {
 		href: song.href
 	};
 }
+
+
 
 function isShuffledEnabled() {
 	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
