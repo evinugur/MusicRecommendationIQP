@@ -20,6 +20,8 @@ var VALUE_NO_SONG = {name :"", href: ""};
 
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
+	{className: 'thumbUp', eventName: EVENT_THUMBS_UP_ADDED},
+	{className: 'thumbDown', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbUpButton', eventName: EVENT_THUMBS_UP_ADDED},
 	{className: 'playButton', eventName: EVENT_PLAY},
@@ -212,8 +214,6 @@ For this we need a notion of station primary key. Each station has a UUID but i'
 by looking for links that have the station id as an HTTP param. 
 
 Also need to code a way for a user to track when a user adds a seed to a station, or possibly removes one as well.
-
-Should track song when click occurs
 */
 
 bindEventsAfterSplashScreen();
