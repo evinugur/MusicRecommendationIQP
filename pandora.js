@@ -20,14 +20,18 @@ var VALUE_NO_SONG = {name :"", href: ""};
 
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
-	{className: 'thumbUp', eventName: EVENT_THUMBS_UP_ADDED},
-	{className: 'thumbDown', eventName: EVENT_THUMBS_DOWN_ADDED},
+	// all of these are menu bar buttons
 	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbUpButton', eventName: EVENT_THUMBS_UP_ADDED},
 	{className: 'playButton', eventName: EVENT_PLAY},
 	{className: 'pauseButton', eventName: EVENT_PAUSE},
 	{className: 'skipButton', eventName: EVENT_SKIP}];
 
+
+var IMG_HOVER_NEURTAL_TO_UP = '/img/content-area/smallthumbs/btn_up_sm.png';
+var IMG_HOVER_UP_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_up_indicator_sm.png';
+var IMG_HOVER_NEURTAL_TO_DOWN = '/img/content-area/smallthumbs/btn_down_sm.png';
+var IMG_HOVER_DOWN_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_down_indicator_sm.png';
 
 /* chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
 multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
@@ -93,6 +97,12 @@ function injectListeners() {
 			});	
 		};
 	});
+	debugger;
+	$('.stationContent').on('click', '.thumbUp', function() {
+		debugger;
+	});
+
+
 	var url = document.location.href;
 	if (url.indexOf("pandora.com/station/") !== -1) 
 		if(url.indexOf("/play/") === -1)
