@@ -19,6 +19,7 @@ var EVENT_INITIAL_STATION = "Initial Station";
 var VALUE_NO_SONG = {name :"", href: ""};
 
 // these refer to events that can be tracked directky by clicking on a DOM element
+// all of these are menu bar buttons
 var clickableClassNames = [
 	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbUpButton', eventName: EVENT_THUMBS_UP_ADDED},
