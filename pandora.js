@@ -20,14 +20,17 @@ var VALUE_NO_SONG = {name :"", href: ""};
 
 // these refer to events that can be tracked directky by clicking on a DOM element
 var clickableClassNames = [
-	{className: 'thumbUp', eventName: EVENT_THUMBS_UP_ADDED},
-	{className: 'thumbDown', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
 	{className: 'thumbUpButton', eventName: EVENT_THUMBS_UP_ADDED},
 	{className: 'playButton', eventName: EVENT_PLAY},
 	{className: 'pauseButton', eventName: EVENT_PAUSE},
 	{className: 'skipButton', eventName: EVENT_SKIP}];
 
+
+var IMG_HOVER_NEURTAL_TO_UP = '/img/content-area/smallthumbs/btn_up_sm.png';
+var IMG_HOVER_UP_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_up_indicator_sm.png';
+var IMG_HOVER_NEURTAL_TO_DOWN = '/img/content-area/smallthumbs/btn_down_sm.png';
+var IMG_HOVER_DOWN_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_down_indicator_sm.png';
 
 /* chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
 multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
@@ -42,6 +45,8 @@ At URL_POLLING_INVTERVAL if URL_CACHE is incorrect URL_CHANGE_CALLBACK will be c
 var URL_POLLING_INTERVAL = 100;
 var URL_CACHE = document.location.href;
 var URL_CHANGE_CALLBACK = null;
+
+var ANTI_BUBBLE_POLLING_INTERVAL = 100;
 
 // just used for diagnostic printing; shows how the current async timeout request we are on
 var loadingDelayCount = 0;
@@ -67,9 +72,27 @@ function init() {
 			}
 		}
 		setTimeout(urlPolling, URL_POLLING_INTERVAL);
-	}
+	};
+
+	// some dynamic events don't bubble - solution: crudely lobe code many times a second 
+	
+	var antiEventBubblingPolling = function() {
+		var cssTag = "bubble_bound";
+		var eventWithNamespace = "click.bubble_thumb";
+		$('.thumbUp:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
+			console.log("Thumb Up");
+			debugger;
+		});
+		$('.thumbDown:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
+			console.log("Thumb Up");
+			debugger;
+		});
+		setTimeout(antiEventBubblingPolling, ANTI_BUBBLE_POLLING_INTERVAL)
+	};
+
 	urlPolling();
 	injectListeners();
+	antiEventBubblingPolling();
 	recordInitialStationEvent();
 }
 
@@ -93,6 +116,7 @@ function injectListeners() {
 			});	
 		};
 	});
+
 	var url = document.location.href;
 	if (url.indexOf("pandora.com/station/") !== -1) 
 		if(url.indexOf("/play/") === -1)
