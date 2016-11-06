@@ -6,7 +6,7 @@ var KEY_SONG = "song";
 var KEY_SHUFFLE_ON = "shuffle";
 
 // hardcoded values for KEY_EVENT
-var EVENT_THUMBS_DOWN_ADDED = "Tumb Down Added";
+var EVENT_THUMBS_DOWN_ADDED = "Thumb Down Added";
 var EVENT_THUMBS_UP_ADDED 	= "Thumb Up Added";
 var EVENT_THUMBS_DOWN_DELETED = "Thumb Down Deleted";
 var EVENT_THUMBS_UP_DELETED = "Thumb Up Deleted";
