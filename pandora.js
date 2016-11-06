@@ -155,9 +155,11 @@ function injectListeners() {
 
 function recordInitialStationEvent() {
 	window.setTimeout(function() {
+		var id = $('.slides.unselectable')[0].children[0].id;
+		id = id.substring("stationSlides".length);
 		track({
 				KEY_EVENT: EVENT_INITIAL_STATION,
-				KEY_STATION_ID: getStationIdFromUrl(window.location.href, "/station/play/")
+				KEY_STATION_ID: id
 			});	
 	}, 3000);
 }
@@ -262,12 +264,8 @@ function isShuffledEnabled() {
 	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
 }
 
-/* points of concern 
-Need to track when participants add a seed 
-For this we need a notion of station primary key. Each station has a UUID but i'm unsure if that's accessible from within the DOM. This can likely be found
-by looking for links that have the station id as an HTTP param. 
-
-Also need to code a way for a user to track when a user adds a seed to a station, or possibly removes one as well.
+/* 
+Also need to code a way for a user to track when a user adds a seed to a station, or possibly removes one as well - this can be done retroactively.
 */
 
 bindEventsAfterSplashScreen();
