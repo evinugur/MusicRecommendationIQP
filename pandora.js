@@ -21,17 +21,18 @@ var VALUE_NO_SONG = {name :"", href: ""};
 // these refer to events that can be tracked directky by clicking on a DOM element
 // all of these are menu bar buttons
 var clickableClassNames = [
-	{className: 'thumbDownButton', eventName: EVENT_THUMBS_DOWN_ADDED},
-	{className: 'thumbUpButton', eventName: EVENT_THUMBS_UP_ADDED},
 	{className: 'playButton', eventName: EVENT_PLAY},
 	{className: 'pauseButton', eventName: EVENT_PAUSE},
 	{className: 'skipButton', eventName: EVENT_SKIP}];
 
 
-var IMG_HOVER_NEURTAL_TO_UP = '/img/content-area/smallthumbs/btn_up_sm.png';
-var IMG_HOVER_UP_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_up_indicator_sm.png';
-var IMG_HOVER_NEURTAL_TO_DOWN = '/img/content-area/smallthumbs/btn_down_sm.png';
-var IMG_HOVER_DOWN_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_down_indicator_sm.png';
+var IMG_MENUBAR_THUMB_NEUTRAL_TO_UP = '/img/player-controls/btn_up@2x.png';
+var IMG_MENUBAR_THUMB_NEUTRAL_TO_DOWN = '/img/player-controls/btn_down@2x.png';
+
+var IMG_HOVER_NEURTAL_TO_UP = '/img/content-area/smallthumbs/btn_up_hover_sm.png';
+var IMG_HOVER_UP_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_up_indicator_hover_sm.png';
+var IMG_HOVER_NEURTAL_TO_DOWN = '/img/content-area/smallthumbs/btn_down_hover_sm.png';
+var IMG_HOVER_DOWN_TO_NEUTRAL = '/img/content-area/smallthumbs/btn_down_indicator_hover_sm.png';
 
 /* chrome will run the script when the page is loading; this gets tricky becuase Pandora loads a splashscreen with a 
 multitutde of async requests. What we can do is periorically probe until the splash screen is gone in the dom via timeout
@@ -63,6 +64,20 @@ function bindEventsAfterSplashScreen() {
 	}
 }
 
+
+function getHoverThumbItem(isThumbUpBtn, thumbDiv) {
+	var thumbElement = thumbDiv.children[0];
+	var style = getComputedStyle(thumbElement);
+	var url = style['background-image'];
+	if (isThumbUpBtn) {
+		if (url.indexOf(IMG_HOVER_NEURTAL_TO_UP) !== -1) console.log(EVENT_THUMBS_UP_ADDED);
+		else console.log(EVENT_THUMBS_UP_DELETED);
+	} else {
+		if (url.indexOf(IMG_HOVER_NEURTAL_TO_DOWN) !== -1) console.log(EVENT_THUMBS_DOWN_ADDED);
+		else console.log(EVENT_THUMBS_DOWN_DELETED);
+	}
+}
+
 function init() {
 	var urlPolling = function() {
 		if (URL_CACHE !== document.location.href) {
@@ -82,11 +97,11 @@ function init() {
 		var eventWithNamespace = "click.bubble_thumb";
 		$('.thumbUp:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
 			console.log("Thumb Up");
-			debugger;
+			getHoverThumbItem(true, this);
 		});
 		$('.thumbDown:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
-			console.log("Thumb Up");
-			debugger;
+			console.log("Thumb Down");
+			getHoverThumbItem(false, this);
 		});
 		setTimeout(antiEventBubblingPolling, ANTI_BUBBLE_POLLING_INTERVAL)
 	};
@@ -97,6 +112,7 @@ function init() {
 	recordInitialStationEvent();
 }
 
+
 function injectListeners() {
 	clickableClassNames.forEach(function(currentValue, index, array) {
 			var element = document.getElementsByClassName(currentValue.className)[0].children[0];
@@ -104,6 +120,19 @@ function injectListeners() {
 				track({KEY_EVENT: currentValue.eventName});
 			});
 	});
+
+	$('.thumbUpButton').click(function() {
+		if (getComputedStyle(this.children[0])['background-image'].indexOf(IMG_MENUBAR_THUMB_NEUTRAL_TO_UP) !== -1)
+			track({KEY_EVENT: EVENT_THUMBS_UP_ADDED});
+		else track({KEY_EVENT: EVENT_THUMBS_UP_DELETED});
+	});
+
+	$('.thumbDownButton').click(function() {
+		if (getComputedStyle(this.children[0])['background-image'].indexOf(IMG_MENUBAR_THUMB_NEUTRAL_TO_DOWN) !== -1)
+			track({KEY_EVENT: EVENT_THUMBS_DOWN_ADDED});
+		else track({KEY_EVENT: EVENT_THUMBS_DOWN_DELETED});
+	});
+
 	// station change event 
 	$("#stationList").on("click", ".stationListItem", function() {
 		if (this.children[0].id === "shuffleContainer") return; // shuffling is tracked separately
