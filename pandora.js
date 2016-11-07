@@ -92,6 +92,7 @@ function init() {
 
 	// some dynamic events don't bubble - solution: crudely lobe code many times a second 
 	
+	/*
 	var antiEventBubblingPolling = function() {
 		var cssTag = "bubble_bound";
 		var eventWithNamespace = "click.bubble_thumb";
@@ -105,6 +106,7 @@ function init() {
 		});
 		setTimeout(antiEventBubblingPolling, ANTI_BUBBLE_POLLING_INTERVAL)
 	};
+	*/
 
 	var antiHoverThumbCss = function() {
 		$('.thumbUp').remove();
