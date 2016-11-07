@@ -1,14 +1,59 @@
 <!doctype html>
 <html>
 <head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="background.js"></script>
 </head>
 <body>
-<h1>Please Enter Tunein Email</h1>
-<div>
-	<input type="text" id="tuneinEmail">
-	<input type="button" id="tuneinButton" value="Save Tunein Email">
-	<input type="button" id="tuneinGetButton" value="Get Tunein Email">
+<div class="jumbotron text-center">
+  <div class="container">
+    <h1>IQP Participant Registration</h1>
+  </div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+		<p>
+			Thank you for participating in our IQP Study. Please enter your name, and the assigned email you were given before you begin the study.
+		</p>
+		<p>
+			If you ever have any questions please feel free to reach out to us at any time at <a href="mailto:musicautomation@wpi.edu">musicautomation@wpi.edu</a>.
+		</p>
+		<p>
+			<em style ="text-align: center;">
+			--<br/>
+			David Allen, Jeremy Campo, Evin Ugur, Henry Wheeler-Mackta</em>
+		</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<form>
+  <div class="form-group">
+    <label for="inputName">Participant Name</label>
+    <input type="email" class="form-control" id="inputName" aria-describedby="emailHelp" placeholder="Name">
+  </div>
+  <div class="form-group">
+    <label for="inputWPIEmail">WPI Email</label>
+    <input type="text" class="form-control" id="inputWPIEmail" placeholder="WPI Email">
+  </div>
+  <div class="form-group">
+  	<label for="inputNumber1">Participant Number</label>
+    <input min="0" max="19" type="number" class="form-control" id="inputNumber1" placeholder="Participant Number">
+  </div>
+  <div class="form-group">
+  	<label min="0" max="19" for="inputNumber2">Re-enter: Participant Number</label>
+    <input type="number" class="form-control" id="inputNumber2" placeholder="Participant Number">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+<!--<input  class="form-control" type="text" id="tuneinEmail">
+			<button class="btn btn-default" id="tuneinButton">Save Tunein Email</button>
+			<button class="btn btn-default" id="tuneinGetButton">Get Tunein Email</button> -->
+		</div>
+	</div>
 </div>
 </body>
 </html>
