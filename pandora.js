@@ -106,9 +106,16 @@ function init() {
 		setTimeout(antiEventBubblingPolling, ANTI_BUBBLE_POLLING_INTERVAL)
 	};
 
+	var antiHoverThumbCss = function() {
+		$('.thumbUp').remove();
+		$('.thumbDown').remove();
+		setTimeout(antiHoverThumbCss, ANTI_BUBBLE_POLLING_INTERVAL);
+	}
+
 	urlPolling();
 	injectListeners();
-	antiEventBubblingPolling();
+	// antiEventBubblingPolling();
+	antiHoverThumbCss();
 	recordInitialStationEvent();
 }
 
@@ -263,6 +270,7 @@ function getSongInfo() {
 function isShuffledEnabled() {
 	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
 }
+
 
 /* 
 Also need to code a way for a user to track when a user adds a seed to a station, or possibly removes one as well - this can be done retroactively.
