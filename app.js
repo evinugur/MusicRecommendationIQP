@@ -1,3 +1,5 @@
+
+
 (function() {
 	var url = document.location.href;
 	if (url.indexOf("pandora") !== -1) {
@@ -14,11 +16,13 @@ function injectScript(src) {
 	script.src = chrome.extension.getURL(src);
 	script.onload = function() { this.parentNode.removeChild(this); };
 	(document.head || document.documentElement).appendChild(script);
+	// if they don't have their settings configured then pop open the page
+	var STORAGE_KEY_USER_REGISTERED = "userRegistered";
+	chrome.storage.local.get(STORAGE_KEY_USER_REGISTERED, function(result) {
+		if (result[STORAGE_KEY_USER_REGISTERED]) return;
+		// tell background script (running sandboxed from web page) that we need to open the registration page
+		chrome.runtime.sendMessage({"event": "register"}, function(response) {
+			console.log(response.farewell);
+		});
+	});
 }
-
-// React when a browser action's icon is clicked.
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('background.html')}, function() {
-  	
-  });
-});

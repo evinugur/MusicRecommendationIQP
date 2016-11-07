@@ -1,9 +1,15 @@
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	debugger;
+	if (request.event === "register");
+		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
+});
+
 window.onload = function() {
+		var STORAGE_KEY_USER_REGISTERED = "userRegistered";
 		var STORAGE_KEY_TUNEIN = "tuneinEmail";
 		document.getElementById('tuneinGetButton').onclick = function() {
 			chrome.storage.local.get(STORAGE_KEY_TUNEIN, function(result) {
 				console.log(result[STORAGE_KEY_TUNEIN]);
-				debugger;
 			});
 		};
 		document.getElementById("tuneinButton").onclick = function() {
