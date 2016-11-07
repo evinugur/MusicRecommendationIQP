@@ -15,6 +15,8 @@ var EVENT_PAUSE = "Pause";
 var EVENT_SKIP = "Skip";
 var EVENT_STATION_SELECT = "Station Select";
 var EVENT_INITIAL_STATION = "Initial Station";
+var EVENT_SHUFFLE_ON = "Shuffle On";
+var EVENT_SHUFFLE_OFF = "Shuffle Off";
 
 var VALUE_NO_SONG = {name :"", href: ""};
 
@@ -64,20 +66,6 @@ function bindEventsAfterSplashScreen() {
 	}
 }
 
-
-function getHoverThumbItem(isThumbUpBtn, thumbDiv) {
-	var thumbElement = thumbDiv.children[0];
-	var style = getComputedStyle(thumbElement);
-	var url = style['background-image'];
-	if (isThumbUpBtn) {
-		if (url.indexOf(IMG_HOVER_NEURTAL_TO_UP) !== -1) console.log(EVENT_THUMBS_UP_ADDED);
-		else console.log(EVENT_THUMBS_UP_DELETED);
-	} else {
-		if (url.indexOf(IMG_HOVER_NEURTAL_TO_DOWN) !== -1) console.log(EVENT_THUMBS_DOWN_ADDED);
-		else console.log(EVENT_THUMBS_DOWN_DELETED);
-	}
-}
-
 function init() {
 	var urlPolling = function() {
 		if (URL_CACHE !== document.location.href) {
@@ -92,21 +80,14 @@ function init() {
 
 	// some dynamic events don't bubble - solution: crudely lobe code many times a second 
 	
-	/*
 	var antiEventBubblingPolling = function() {
 		var cssTag = "bubble_bound";
 		var eventWithNamespace = "click.bubble_thumb";
-		$('.thumbUp:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
-			console.log("Thumb Up");
-			getHoverThumbItem(true, this);
-		});
-		$('.thumbDown:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
-			console.log("Thumb Down");
-			getHoverThumbItem(false, this);
+		$('#shuffleContainer:not(.' + cssTag + ')').addClass(cssTag).bind(eventWithNamespace, function() {
+			if (this.parentElement.className.indexOf('selected') === -1) track({KEY_EVENT: EVENT_SHUFFLE_ON});
 		});
 		setTimeout(antiEventBubblingPolling, ANTI_BUBBLE_POLLING_INTERVAL)
 	};
-	*/
 
 	var antiHoverThumbCss = function() {
 		$('.thumbUp').remove();
@@ -116,7 +97,7 @@ function init() {
 
 	urlPolling();
 	injectListeners();
-	// antiEventBubblingPolling();
+	antiEventBubblingPolling();
 	antiHoverThumbCss();
 	recordInitialStationEvent();
 }
@@ -248,10 +229,8 @@ function getStationIdFromUrl(url, token) {
 	return url;
 }
 
-// TODO broken on shuffle
 function getCurrentStationName() {
-	var container = document.getElementsByClassName('stationListItem selected')[0];
-	return container.getElementsByClassName('stationNameText')[0].innerHTML.trim();
+	return $('.stationChangeSelectorNoMenu')[0].children[0].innerHTML;
 }
 
 function getCurrentUsername() {
