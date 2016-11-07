@@ -15,3 +15,10 @@ function injectScript(src) {
 	script.onload = function() { this.parentNode.removeChild(this); };
 	(document.head || document.documentElement).appendChild(script);
 }
+
+// React when a browser action's icon is clicked.
+chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.tabs.create({'url': chrome.extension.getURL('background.html')}, function() {
+  	
+  });
+});
