@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
 });
 
-window.onload = function() {
+window.onload1 = function() {
 		var STORAGE_KEY_USER_REGISTERED = "userRegistered";
 		var STORAGE_KEY_TUNEIN = "tuneinEmail";
 		document.getElementById('tuneinGetButton').onclick = function() {
@@ -25,3 +25,58 @@ window.onload = function() {
 			});
 		};
 	};
+
+
+window.onload = function() {
+	var STORAGE_KEY_USER_REGISTERED = "userRegistered";
+	var STORAGE_KEY_TUNEIN = "tuneinEmail";
+	chrome.storage.local.get(STORAGE_KEY_USER_REGISTERED, function(result) {
+		initForm(result[STORAGE_KEY_USER_REGISTERED] !== undefined);
+	});
+}
+
+function initForm(isRegistered) {
+	var inputName = document.querySelector('#inputName');
+	var inputWPIEmail = document.querySelector('#inputWPIEmail');
+	var inputNumber1 = document.querySelector('#inputNumber1');
+	var inputNumber2 = document.querySelector('#inputNumber2');	
+	var btnRegister = document.querySelector('#btnRegister');
+	var msgError = document.querySelector("#msgError");
+	var errorContainer = document.querySelector("#errorContainer");
+	if (isRegistered) {
+		inputName.disabled = true;
+		inputWPIEmail.disabled = true;
+		inputNumber1.disabled = true;
+		inputNumber2.disabled = true;
+		btnRegister.disabled = true;
+		document.querySelector('#msgAlreadyRegistered').style.display = "block";
+		return;
+	}
+	var FORM_VALID_MSG = "Pass";
+	var checkForErrors = function() {
+		if (inputName.value.trim() === '') return "Please Enter Your Name";
+		var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+		if (!testEmail.test(inputWPIEmail.value)) return "Invalid Email";
+		if (inputWPIEmail.value.toLowerCase().indexOf("@wpi.edu") === -1) return "Please Use Your WPI Email";
+		if (inputNumber1.value.trim() === '' || isNaN(inputNumber1.value)) return "Invalid Participation Number";
+		if (inputNumber2.value.trim() === '' || isNaN(inputNumber2.value)) return "Invalid Participation Number";
+		if (inputNumber1.value !== inputNumber2.value) return "Participation Numbers Don't Match";
+		return FORM_VALID_MSG;
+	};
+
+	var validateForm = function() {
+		var msg = checkForErrors();
+		if (msg === FORM_VALID_MSG) {
+			btnRegister.disabled = false;
+			errorContainer.style.display = "none";
+		} else {
+			btnRegister.disabled = true;
+			errorContainer.style.display = "block";
+			msgError.innerHTML = msg;
+		}
+	}
+	inputName.oninput = validateForm;
+	inputWPIEmail.oninput = validateForm;
+	inputNumber1.oninput = validateForm;
+	inputNumber2.oninput = validateForm;
+}
