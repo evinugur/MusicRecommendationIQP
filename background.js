@@ -1,5 +1,4 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	debugger;
 	if (request.event === "register");
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
 });
@@ -58,9 +57,11 @@ function initForm(isRegistered) {
 		var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
 		if (!testEmail.test(inputWPIEmail.value)) return "Invalid Email";
 		if (inputWPIEmail.value.toLowerCase().indexOf("@wpi.edu") === -1) return "Please Use Your WPI Email";
-		if (inputNumber1.value.trim() === '' || isNaN(inputNumber1.value)) return "Invalid Participation Number";
-		if (inputNumber2.value.trim() === '' || isNaN(inputNumber2.value)) return "Invalid Participation Number";
-		if (inputNumber1.value !== inputNumber2.value) return "Participation Numbers Don't Match";
+		if (inputNumber1.value.trim() === '' || isNaN(inputNumber1.value)) return "Invalid Participant Number";
+		if (inputNumber2.value.trim() === '' || isNaN(inputNumber2.value)) return "Invalid Participant Number";
+		if (inputNumber1.value !== inputNumber2.value) return "Participant Numbers Don't Match";
+		var numId = Number(inputNumber1.value.trim());
+		if (numId < 0 || numId > 19) return "Invalid Participant Number";
 		return FORM_VALID_MSG;
 	};
 
@@ -79,4 +80,29 @@ function initForm(isRegistered) {
 	inputWPIEmail.oninput = validateForm;
 	inputNumber1.oninput = validateForm;
 	inputNumber2.oninput = validateForm;
+	btnRegister.onclick = function() {
+		var name = inputName.value.trim();
+		var wpiEmail = inputWPIEmail.value.trim();
+		var participantNumber = inputNumber1.value.trim();
+		var payload = {
+			id: participantNumber,
+			name: name,
+			wpiEmail: wpiEmail
+		};
+		debugger;
+		$.ajax({
+			url: 'https://warm-lake-98113.herokuapp.com/users',
+			type: 'POST',
+			data: JSON.stringify(payload),
+			contentType : 'application/json',
+			success: function(resp) { 
+				if (resp === name + " added") {
+					initForm(true); // set UI to registered state
+				} else {
+					errorContainer.style.display = "block";
+					msgError.innerHTML = resp;
+				}
+			}
+		});
+	}
 }
