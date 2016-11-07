@@ -1,29 +1,13 @@
 <!doctype html>
 <html>
 <head>
-<script type="text/javascript">
-	window.onload = function() {
-		document.getElementById("tuneinButton").onclick = function() {
-			var text = document.getElementById("tuneinEmail").value.trim();
-			if (!text) {
-				console.log("Invalid!");
-				return;
-			}
-			console.log("Saving", text);
-			chrome.storage.sync.set({'tuneinEmail': text}, function() {
-          // Notify that we saved.
-          console.log("Saved", text);
-          message('Settings saved');
-      });
-		};
-	};
-</script>
+<script type="text/javascript" src="background.js"></script>
 </head>
 <body>
 <h1>Please Enter Tunein Email</h1>
 <div>
 	<input type="text" id="tuneinEmail">
-	<input type="button" id="tuneinButton">
+	<input type="button" id="tuneinButton" value="Save Tunein Email">
 </div>
 </body>
 </html>
