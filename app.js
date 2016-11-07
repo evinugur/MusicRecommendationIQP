@@ -17,9 +17,10 @@ function injectScript(src) {
 	script.onload = function() { this.parentNode.removeChild(this); };
 	(document.head || document.documentElement).appendChild(script);
 	// if they don't have their settings configured then pop open the page
-	var STORAGE_KEY_USER_REGISTERED = "userRegistered";
-	chrome.storage.local.get(STORAGE_KEY_USER_REGISTERED, function(result) {
-		if (result[STORAGE_KEY_USER_REGISTERED]) return;
+	var STORAGE_KEY_USER_ID = "userId";
+	chrome.storage.local.get(STORAGE_KEY_USER_ID, function(result) {
+		debugger; 
+		if (!isNaN(result[STORAGE_KEY_USER_ID])) return;
 		// tell background script (running sandboxed from web page) that we need to open the registration page
 		chrome.runtime.sendMessage({"event": "register"}, function(response) {
 			console.log(response.farewell);

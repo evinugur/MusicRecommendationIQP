@@ -2,12 +2,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.event === "register");
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
 });
-var STORAGE_KEY_USER_REGISTERED = "userRegistered";
-var STORAGE_KEY_TUNEIN = "tuneinEmail";
+var STORAGE_KEY_USER_ID = "userId";
+var STORAGE_KEY_USER_NAME = "name";
+var STORAGE_KEY_USER_WPI = "wpiemail";
 
 window.onload = function() {
-	chrome.storage.local.get(STORAGE_KEY_USER_REGISTERED, function(result) {
-		initForm(result[STORAGE_KEY_USER_REGISTERED] !== undefined);
+	chrome.storage.local.get(STORAGE_KEY_USER_ID, function(result) {
+		initForm(!isNaN(result[STORAGE_KEY_USER_ID]));
 	});
 }
 
@@ -20,6 +21,12 @@ function initForm(isRegistered) {
 	var msgError = document.querySelector("#msgError");
 	var errorContainer = document.querySelector("#errorContainer");
 	if (isRegistered) {
+		chrome.storage.local.get([STORAGE_KEY_USER_ID, STORAGE_KEY_USER_WPI, STORAGE_KEY_USER_NAME], function(result) {
+			inputName.value = result[STORAGE_KEY_USER_NAME];
+			inputWPIEmail.value = result[STORAGE_KEY_USER_WPI];
+			inputNumber1.value = result[STORAGE_KEY_USER_ID];
+			inputNumber2.value = result[STORAGE_KEY_USER_ID];
+		});
 		inputName.disabled = true;
 		inputWPIEmail.disabled = true;
 		inputNumber1.disabled = true;
@@ -74,8 +81,9 @@ function initForm(isRegistered) {
 			success: function(resp) { 
 				if (resp === name + " added") {
 					var storageMessage = {};
-					storageMessage[STORAGE_KEY_USER_REGISTERED];
-					storageMessage[STORAGE_KEY_TUNEIN] = Number(participantNumber);
+					storageMessage[STORAGE_KEY_USER_ID] = Number(participantNumber);
+					storageMessage[STORAGE_KEY_USER_NAME] = name;
+					storageMessage[STORAGE_KEY_USER_WPI] = wpiEmail;
 					chrome.storage.local.set(storageMessage, function() {
 						initForm(true); // set UI to locked
 					});
