@@ -2,33 +2,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.event === "register");
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
 });
-
-window.onload1 = function() {
-		var STORAGE_KEY_USER_REGISTERED = "userRegistered";
-		var STORAGE_KEY_TUNEIN = "tuneinEmail";
-		document.getElementById('tuneinGetButton').onclick = function() {
-			chrome.storage.local.get(STORAGE_KEY_TUNEIN, function(result) {
-				console.log(result[STORAGE_KEY_TUNEIN]);
-			});
-		};
-		document.getElementById("tuneinButton").onclick = function() {
-			var text = document.getElementById("tuneinEmail").value.trim();
-			if (!text) {
-				console.log("Invalid!");
-				return;
-			}
-			var payload = {};
-			payload[STORAGE_KEY_TUNEIN] = text;
-			chrome.storage.local.set(payload, function() {
-				console.log("Saving", text);
-			});
-		};
-	};
-
+var STORAGE_KEY_USER_REGISTERED = "userRegistered";
+var STORAGE_KEY_TUNEIN = "tuneinEmail";
 
 window.onload = function() {
-	var STORAGE_KEY_USER_REGISTERED = "userRegistered";
-	var STORAGE_KEY_TUNEIN = "tuneinEmail";
 	chrome.storage.local.get(STORAGE_KEY_USER_REGISTERED, function(result) {
 		initForm(result[STORAGE_KEY_USER_REGISTERED] !== undefined);
 	});
@@ -89,7 +66,6 @@ function initForm(isRegistered) {
 			name: name,
 			wpiEmail: wpiEmail
 		};
-		debugger;
 		$.ajax({
 			url: 'https://warm-lake-98113.herokuapp.com/users',
 			type: 'POST',
@@ -97,7 +73,12 @@ function initForm(isRegistered) {
 			contentType : 'application/json',
 			success: function(resp) { 
 				if (resp === name + " added") {
-					initForm(true); // set UI to registered state
+					var storageMessage = {};
+					storageMessage[STORAGE_KEY_USER_REGISTERED];
+					storageMessage[STORAGE_KEY_TUNEIN] = Number(participantNumber);
+					chrome.storage.local.set(storageMessage, function() {
+						initForm(true); // set UI to locked
+					});
 				} else {
 					errorContainer.style.display = "block";
 					msgError.innerHTML = resp;
