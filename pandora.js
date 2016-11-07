@@ -164,7 +164,7 @@ function injectStationDetailListeners() {
 	console.log("injecting station detail page listeners");
 	var url = document.location.href.split('/');
 	// we need station id from URL since you can view a station's details while playing another station
-	var stationId = Number(url[url.length -1]);
+	var stationId = url[url.length -1];
 	var stationName = $('.hed-1')[0].innerHTML.trim();
 	$('.thumb_up_list').find('.deletable').each(function() {
 		var el = this;
