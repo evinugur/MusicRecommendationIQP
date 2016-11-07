@@ -129,6 +129,7 @@ function injectListeners() {
 		if (isShuffledEnabled()) track({KEY_EVENT: EVENT_SHUFFLE_OFF});
 		var newStation = $(this).find('.stationNameText')[0].innerHTML.trim();
 		window.URL_CHANGE_CALLBACK = function() {
+			if (isStationDetails()) return;
 			track({
 				KEY_EVENT: EVENT_STATION_SELECT,
 				KEY_STATION_ID: getStationIdFromUrl(window.location.href, "/station/play/"),
@@ -139,9 +140,13 @@ function injectListeners() {
 	});
 
 	var url = document.location.href;
-	if (url.indexOf("pandora.com/station/") !== -1) 
+	if (isStationDetails()) 
 		if(url.indexOf("/play/") === -1)
 			injectStationDetailListeners();
+}
+
+function isStationDetails() {
+	return document.location.href.indexOf("pandora.com/station/") !== -1;
 }
 
 function recordInitialStationEvent() {
