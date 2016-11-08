@@ -8,11 +8,9 @@ var STORAGE_KEY_USER_NAME = "name";
 var STORAGE_KEY_USER_WPI = "wpiemail";
 
 window.onload = function() {
-
 	chrome.storage.local.get(STORAGE_KEY_USER_ID, function(result) {
 		initForm(!isNaN(result[STORAGE_KEY_USER_ID]));
 	});
-
 }
 
 // reloads all pandora or tunein sites
