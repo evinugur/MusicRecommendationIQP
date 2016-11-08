@@ -11,11 +11,12 @@ function init() {
 		var tab = tabs[0];
 		if (tab.url.indexOf("tunein.com/radio") === -1 && tab.url.indexOf("pandora.com") === -1) {
 			discoveryBtn.disabled = true;
-			return;
+			discoveryBtn.title = "Use this to notify a discovery on pandora or tunein";
+		} else {
+			discoveryBtn.disabled = false;
+			discoveryBtn.title = undefined;
 		}
-		discoveryBtn.disabled = false;
 	});
-
 
 
 	discoveryBtn.addEventListener('click', function() {
