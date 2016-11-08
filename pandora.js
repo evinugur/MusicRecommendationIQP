@@ -121,13 +121,13 @@ function injectListeners() {
 	});
 
 	$('.thumbUpButton').click(function() {
-		if (getComputedStyle(this.children[0])['background-image'].indexOf(IMG_MENUBAR_THUMB_NEUTRAL_TO_UP) !== -1)
+		if (getComputedStyle(this.children[0])['background-image'].indexOf('indicator' /*IMG_MENUBAR_THUMB_NEUTRAL_TO_UP*/) === -1)
 			track({KEY_EVENT: EVENT_THUMBS_UP_ADDED});
 		else track({KEY_EVENT: EVENT_THUMBS_UP_DELETED});
 	});
 
 	$('.thumbDownButton').click(function() {
-		if (getComputedStyle(this.children[0])['background-image'].indexOf(IMG_MENUBAR_THUMB_NEUTRAL_TO_DOWN) !== -1)
+		if (getComputedStyle(this.children[0])['background-image'].indexOf('indicator' /*IMG_MENUBAR_THUMB_NEUTRAL_TO_DOWN*/) === -1)
 			track({KEY_EVENT: EVENT_THUMBS_DOWN_ADDED});
 		else track({KEY_EVENT: EVENT_THUMBS_DOWN_DELETED});
 	});
