@@ -1,7 +1,6 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.event === "register")
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
-	}
 });
 
 var STORAGE_KEY_USER_ID = "userId";
@@ -9,8 +8,24 @@ var STORAGE_KEY_USER_NAME = "name";
 var STORAGE_KEY_USER_WPI = "wpiemail";
 
 window.onload = function() {
+
 	chrome.storage.local.get(STORAGE_KEY_USER_ID, function(result) {
 		initForm(!isNaN(result[STORAGE_KEY_USER_ID]));
+	});
+
+}
+
+// reloads all pandora or tunein sites
+function reloadAllSites() {
+	chrome.tabs.query({}, function (tabs) {
+	  var myTabs = [];
+	  for (var i = 0; i < tabs.length; i++) {
+	    if (tabs[i].url.indexOf("pandora.com") !== -1)  myTabs.push(tabs[i].id);
+	    else if (tabs[i].url.indexOf("tunein.com") !== -1) myTabs.push(tabs[i].id);
+	  }
+  	for (var i = 0; i < myTabs.length; i++) {
+			chrome.tabs.reload(myTabs[i]);
+		}
 	});
 }
 
@@ -75,6 +90,11 @@ function initForm(isRegistered) {
 			name: name,
 			wpiEmail: wpiEmail
 		};
+		if (prompt('Please Enter Password From Handout', '') !== "iqp2016") {
+			errorContainer.style.display = "block";
+			msgError.innerHTML = "Invalid Password";
+			return;
+		} else errorContainer.style.display = "none";
 		$.ajax({
 			url: 'https://warm-lake-98113.herokuapp.com/users',
 			type: 'POST',
@@ -88,6 +108,7 @@ function initForm(isRegistered) {
 					storageMessage[STORAGE_KEY_USER_WPI] = wpiEmail;
 					chrome.storage.local.set(storageMessage, function() {
 						initForm(true); // set UI to locked
+						reloadAllSites();
 					});
 				} else {
 					errorContainer.style.display = "block";

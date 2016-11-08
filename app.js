@@ -19,6 +19,7 @@ function getStudyEmail(id) {
 
 	  if (event.data.type && (event.data.type == "FROM_PAGE")) {
 	    var tuneinData = event.data.text.split(' ');
+	    if (window.user === null) return; // don't track
 	    var payload = {
 	    	date: new Date().toISOString(),
 	    	userId: '' + window.user.id,
@@ -26,7 +27,7 @@ function getStudyEmail(id) {
 	    	href: tuneinData[1]
 	    };
 	    $.ajax({
-				url: 'https://warm-lake-98113.herokuapp.com/pandora-event/tunein-events',
+				url: 'https://warm-lake-98113.herokuapp.com/tunein-events',
 				type: 'POST',
 				data: JSON.stringify(payload),
 				contentType : 'application/json',

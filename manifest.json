@@ -1,8 +1,8 @@
 {
 	"name": "IQP Tracker",
-	"description": "Intercept Pandora touch events",
+	"description": "Records data for Music Rec. IQP",
 	"version": "1.0",
-	"author": "Evin Ugur",
+	"author": "evin",
 	"web_accessible_resources": ["pandora.js", "tunein.js"],
 	"icons": { "16": "16.png",
            "48": "48.png",
