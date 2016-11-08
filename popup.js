@@ -9,7 +9,7 @@ function init() {
 
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		var tab = tabs[0];
-		if (tab.url.indexOf("tunein.com") === -1 && tab.url.indexOf("pandora.com") === -1) {
+		if (tab.url.indexOf("tunein.com/radio") === -1 && tab.url.indexOf("pandora.com") === -1) {
 			discoveryBtn.disabled = true;
 			return;
 		}
@@ -21,7 +21,7 @@ function init() {
 	discoveryBtn.addEventListener('click', function() {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 	  		chrome.tabs.sendMessage(tabs[0].id, {event: "discovery"}, function(response) {
-	    	console.log(response.farewell);
+		    	console.log(response.farewell);
   		});
 		});
 	});

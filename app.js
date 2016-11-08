@@ -36,6 +36,27 @@ function getStudyEmail(id) {
 	  }
 	}, false);
 
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+		var url = document.location.href;
+		if (url.indexOf('tunein.com/radio') !== -1) {
+			if (window.user === null) return; // don't track
+	    var payload = {
+	    	date: new Date().toISOString(),
+	    	userId: '' + window.user.id,
+	    	href: document.location.href
+	    };
+	    $.ajax({
+				url: 'https://warm-lake-98113.herokuapp.com/tunein/discovery',
+				type: 'POST',
+				data: JSON.stringify(payload),
+				contentType : 'application/json',
+				success: function() { console.log("Posted"); }
+			});
+		}
+    if (request.greeting === "hello")
+      sendResponse({farewell: "goodbye"});
+  });
+
 	chrome.storage.local.get([STORAGE_KEY_USER_ID, STORAGE_KEY_USER_NAME, STORAGE_KEY_USER_WPI], function(result) {
 		if (!isNaN(result[STORAGE_KEY_USER_ID])) {
 			window.user = {
@@ -46,6 +67,8 @@ function getStudyEmail(id) {
 			};
 		}
 	});
+
+
 
 	var url = document.location.href;
 	if (url.indexOf("pandora") !== -1) {

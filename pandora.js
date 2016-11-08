@@ -102,7 +102,6 @@ function init() {
 	recordInitialStationEvent();
 }
 
-
 function injectListeners() {
 	clickableClassNames.forEach(function(currentValue, index, array) {
 			var element = document.getElementsByClassName(currentValue.className)[0].children[0];
