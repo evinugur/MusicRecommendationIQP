@@ -17,6 +17,7 @@ var EVENT_STATION_SELECT = "Station Select";
 var EVENT_INITIAL_STATION = "Initial Station";
 var EVENT_SHUFFLE_ON = "Shuffle On";
 var EVENT_SHUFFLE_OFF = "Shuffle Off";
+var EVENT_DISCOVERY = "Discovery";
 
 var VALUE_NO_SONG = {name :"", href: ""};
 
@@ -96,10 +97,19 @@ function init() {
 	}
 
 	urlPolling();
+	injectDiscoveryListener();
 	injectListeners();
 	antiEventBubblingPolling();
 	antiHoverThumbCss();
 	recordInitialStationEvent();
+}
+
+function injectDiscoveryListener() {
+	window.addEventListener("message", function(event) {
+		if (event.source != window || event.data.type !== "PANDORA_DISCOVERY")
+			return;
+		track({KEY_EVENT: EVENT_DISCOVERY});
+	});
 }
 
 function injectListeners() {

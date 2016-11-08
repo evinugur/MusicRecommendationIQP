@@ -53,8 +53,9 @@ function getStudyEmail(id) {
 				success: function() { console.log("Posted"); }
 			});
 		}
-    if (request.greeting === "hello")
-      sendResponse({farewell: "goodbye"});
+		else if (url.indexOf("pandora.com") !== -1) {
+			window.postMessage({ type: "PANDORA_DISCOVERY" }, "*");
+		}
   });
 
 	chrome.storage.local.get([STORAGE_KEY_USER_ID, STORAGE_KEY_USER_NAME, STORAGE_KEY_USER_WPI], function(result) {
