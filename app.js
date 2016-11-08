@@ -26,7 +26,7 @@ function getStudyEmail(id) {
 	    	href: tuneinData[1]
 	    };
 	    $.ajax({
-				url: 'https://warm-lake-98113.herokuapp.com/pandora-event/tunein-events',
+				url: 'https://warm-lake-98113.herokuapp.com/tunein-events',
 				type: 'POST',
 				data: JSON.stringify(payload),
 				contentType : 'application/json',

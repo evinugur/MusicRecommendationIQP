@@ -1,7 +1,6 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.event === "register")
 		chrome.tabs.create({'url': chrome.extension.getURL('background.html')});
-	}
 });
 
 var STORAGE_KEY_USER_ID = "userId";
