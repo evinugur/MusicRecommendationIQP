@@ -10,7 +10,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*.pandora.com/*", "https://*.pandora.com/*", "http://*.tunein.com/*", "https://*.tunein.com/*"],
-			"js": ["app.js"],
+			"js": ["app.js", "jquery-3.1.1.min.js"],
 			"run_at": "document_idle"
 		}
 	],

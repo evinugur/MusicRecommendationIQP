@@ -11,20 +11,7 @@ function getStudyEmail(id) {
 }
 
 (function() {
-	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-		if (request.event === "tunein_track") {
-			var href = request.href;
-			var count = request.count;
-			chrome.storage.local.get([STORAGE_KEY_USER_ID, STORAGE_KEY_USER_NAME, STORAGE_KEY_USER_WPI], function(result) {
-				console.log(result);
-				console.log(href);
-				console.log(count);
-			});
-		}
-	});
-
 	window.user = null;
-
 	window.addEventListener("message", function(event) {
 	  // We only accept messages from ourselves
 	  if (event.source != window)
@@ -32,7 +19,19 @@ function getStudyEmail(id) {
 
 	  if (event.data.type && (event.data.type == "FROM_PAGE")) {
 	    var tuneinData = event.data.text.split(' ');
-	    debugger;
+	    var payload = {
+	    	date: new Date().toISOString(),
+	    	userId: '' + window.user.id,
+	    	timeCount: tuneinData[0],
+	    	href: tuneinData[1]
+	    };
+	    $.ajax({
+				url: 'http://localhost:5000/tunein-events',
+				type: 'POST',
+				data: JSON.stringify(payload),
+				contentType : 'application/json',
+				success: function() { console.log("Posted"); }
+			});
 	  }
 	}, false);
 
@@ -49,18 +48,20 @@ function getStudyEmail(id) {
 
 	var url = document.location.href;
 	if (url.indexOf("pandora") !== -1) {
-		injectScript("pandora.js");
+		injectScript(["pandora.js"]);
 	}
 	else if (url.indexOf("tunein") !== -1) {
-		injectScript("tunein.js");
+		injectScript(["tunein.js"]);
 	}
 })();
 
-function injectScript(src) {
-	var script = document.createElement('script');
-	script.src = chrome.extension.getURL(src);
-	script.onload = function() { this.parentNode.removeChild(this); };
-	(document.head || document.documentElement).appendChild(script);
+function injectScript(scripts) {
+	for (var i = 0; i < scripts.length; i++) {
+		var script = document.createElement('script');
+		script.src = chrome.extension.getURL(scripts[i]);
+		script.onload = function() { this.parentNode.removeChild(this); };
+		(document.head || document.documentElement).appendChild(script);
+	}
 	// if they don't have their settings configured then pop open the page
 	chrome.storage.local.get([STORAGE_KEY_USER_ID], function(result) {
 		if (!isNaN(result[STORAGE_KEY_USER_ID])) return;
