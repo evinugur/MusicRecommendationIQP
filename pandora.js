@@ -133,10 +133,9 @@ function injectListeners() {
 	});
 
 	// station change event 
-	$("#stationList").on("click", ".stationListItem", function() {
-		if (this.children[0].id === "shuffleContainer") return; // shuffling is tracked separately
+	$("#stationList").on("click", ".stationNameText", function() {
 		if (isShuffledEnabled()) track({KEY_EVENT: EVENT_SHUFFLE_OFF});
-		var newStation = $(this).find('.stationNameText')[0].innerHTML.trim();
+		var newStation = this.innerHTML.trim();
 		window.URL_CHANGE_CALLBACK = function() {
 			if (isStationDetails()) return;
 			track({
