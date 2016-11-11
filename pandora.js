@@ -209,7 +209,7 @@ function track(data) {
 	console.log("Station Name:\t" + (data.KEY_STATION_NAME || getCurrentStationName()));
 	console.log("Shuffle Enabled:\t" + isShuffledEnabled());
 	console.log("Event:\t" + (data.KEY_EVENT || "ERROR"));
-	console.log("Date:\t" + new Date().toUTCString());
+	console.log("Date:\t" + new Date().toISOString());
 	var song = (data.KEY_SONG || getSongInfo());
 	var payload = {
 		username: getCurrentUsername(),
