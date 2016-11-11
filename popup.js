@@ -14,7 +14,7 @@ function init() {
 			discoveryBtn.title = "Use this to notify a discovery on pandora or tunein";
 		} else {
 			discoveryBtn.disabled = false;
-			discoveryBtn.title = undefined;
+			discoveryBtn.title = "Record this track as a discovery";
 		}
 	});
 
@@ -25,3 +25,4 @@ function init() {
 		});
 	});
 };
+
