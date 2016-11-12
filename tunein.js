@@ -3,7 +3,6 @@ window.onload = function() {
 	var nextTimeout = null;
 	var URL_POLLING_INTERVAL = 100;
 	var URL_CACHE = null;
-	var URL_CHANGE_CALLBACK = null;
 	var track = function() {
 		var url = document.location.href;
 		if (url.indexOf("/radio") === -1) return;
