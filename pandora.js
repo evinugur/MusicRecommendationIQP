@@ -151,11 +151,12 @@ function injectListeners() {
 	if (isStationDetails()) 
 		if(url.indexOf("/play/") === -1)
 			injectStationDetailListeners();
+
+	if (isProfile()) injectProfileFunction();
 }
 
-function isStationDetails() {
-	return document.location.href.indexOf("pandora.com/station/") !== -1;
-}
+function isStationDetails() { return document.location.href.indexOf("pandora.com/station/") !== -1; }
+function isProfile() {return document.location.href.indexOf('pandora.com/profile/muiqp') !== -1; }
 
 function recordInitialStationEvent() {
 	window.setTimeout(function() {
@@ -199,6 +200,18 @@ function injectStationDetailListeners() {
 			});
 		});
 	});
+}
+
+function injectProfileFunction() {
+	window.scrapeCreate = function() {
+		var createEvents = $('.station_create');
+		for (var i = 0; i < createEvents.length; i++) {
+			var stationElement = $(createEvents[i]).find('.artist_name')[0].children[0];
+			var stationName = stationElement.innerHTML;
+			var stationUrl = 'https://www.pandora.com/' + stationElement.href;
+			console.log(stationName, stationUrl);
+		}
+	};
 }
 
 function track(data) {
