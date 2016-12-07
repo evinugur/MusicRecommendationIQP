@@ -212,8 +212,23 @@ function injectProfileFunction() {
 			var stationElement = rootElement.find('.artist_name')[0].children[0];
 			var daysAgo = rootElement.find('.timestamp')[0].innerHTML.trim().split(' ')[0]
 			var stationName = stationElement.innerHTML;
-			var stationUrl = 'https://www.pandora.com/' + stationElement.href;
-			console.log(username, stationName, stationUrl, daysAgo);
+			var stationId = stationElement.href.split('/');
+			stationId = stationId[stationId.length - 1];
+			console.log(username, stationName, stationId, daysAgo);
+			var payload = {
+				username: username,
+				stationId: stationId,
+				stationName: stationName,
+				daysAgo: daysAgo
+			};
+			console.log(payload);
+			$.ajax({
+				url: 'https://warm-lake-98113.herokuapp.com/pandora/create',
+				type: 'POST',
+				data: JSON.stringify(payload),
+				contentType : 'application/json',
+				success: function(resp) { console.log("Posted:\t", resp); }
+			});
 		}
 	};
 }
