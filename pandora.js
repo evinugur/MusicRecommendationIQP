@@ -214,7 +214,6 @@ function injectProfileFunction() {
 			var stationName = stationElement.innerHTML;
 			var stationId = stationElement.href.split('/');
 			stationId = stationId[stationId.length - 1];
-			console.log(username, stationName, stationId, daysAgo);
 			var payload = {
 				username: username,
 				stationId: stationId,
