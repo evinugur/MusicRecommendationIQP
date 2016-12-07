@@ -204,12 +204,16 @@ function injectStationDetailListeners() {
 
 function injectProfileFunction() {
 	window.scrapeCreate = function() {
+		var username = document.location.href.split('/');
+		username = username[username.length - 1] + '@hmamail.com';
 		var createEvents = $('.station_create');
 		for (var i = 0; i < createEvents.length; i++) {
-			var stationElement = $(createEvents[i]).find('.artist_name')[0].children[0];
+			var rootElement = $(createEvents[i]);
+			var stationElement = rootElement.find('.artist_name')[0].children[0];
+			var daysAgo = rootElement.find('.timestamp')[0].innerHTML.trim().split(' ')[0]
 			var stationName = stationElement.innerHTML;
 			var stationUrl = 'https://www.pandora.com/' + stationElement.href;
-			console.log(stationName, stationUrl);
+			console.log(username, stationName, stationUrl, daysAgo);
 		}
 	};
 }
