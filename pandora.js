@@ -261,7 +261,6 @@ function track(data) {
 	});
 }
 
-// TODO possible broken on shuffle
 function getCurrentStationId() {
 	// ie https://www.pandora.com/station/3333039448775710377/fans
 	return getStationIdFromUrl(document.getElementsByClassName('findFans')[0].href, '/station/')
@@ -274,14 +273,9 @@ function getStationIdFromUrl(url, token) {
 	return url;
 }
 
-function getCurrentStationName() {
-	return $('.stationChangeSelectorNoMenu')[0].children[0].innerHTML;
-}
+function getCurrentStationName() { return $('.stationChangeSelectorNoMenu')[0].children[0].innerHTML; }
 
-function getCurrentUsername() {
-	return document.getElementsByClassName('userName')[0].innerHTML;
-}
-
+function getCurrentUsername() { return document.getElementsByClassName('userName')[0].innerHTML; }
 
 function getSongInfo() {
 	var song = $('.songTitle')[0];
@@ -293,13 +287,6 @@ function getSongInfo() {
 	};
 }
 
-function isShuffledEnabled() {
-	return  $('.stationListItem.selected').find("#shuffleContainer").length > 0;
-}
-
-
-/* 
-Also need to code a way for a user to track when a user adds a seed to a station, or possibly removes one as well - this can be done retroactively.
-*/
+function isShuffledEnabled() { return  $('.stationListItem.selected').find("#shuffleContainer").length > 0; }
 
 bindEventsAfterSplashScreen();
